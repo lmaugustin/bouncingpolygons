@@ -13,3 +13,7 @@ polybounce.o: polybounce.cpp
 
 clean:
 	rm -f *.o *~ crossword
+
+push:
+	git commit -m "Update"
+	git push https://github.com/lmaugustin/crossword-anagram master
