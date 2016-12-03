@@ -18,7 +18,8 @@ commit:
 	git commit -m "Update" *.h *.cpp Makefile
 
 pull:
-	git pull https://github.com/lmaugustin/crossword-anagram
+	-make commit
+	git pull
 
 push:
 	-git commit -m "Update" *.h *.cpp Makefile
