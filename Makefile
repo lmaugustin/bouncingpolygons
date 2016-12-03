@@ -1,6 +1,6 @@
 # Makefile for the Game of Life
 
-GFLAGS=-g -c -std=c++11
+GFLAGS=-g -c -std=c++11 -DDEBUG
 
 polybounce: polybounce.o polygon.o
 	g++ polybounce.o polygon.o gfx.o -lX11 -o polybounce

@@ -18,7 +18,6 @@ int main() {
   gfx_open(WIN_WIDTH, WIN_HEIGHT, "Bouncing Polygons");
 
   while( input_c != 'q') {
-    gfx_clear();
     if(gfx_event_waiting()) {
       input_c = gfx_wait();
       if(input_c == 1) { // mouse click
@@ -28,10 +27,14 @@ int main() {
 	Polygon *p = new Polygon(x,y,side_counter);
 	Polygons.push_back(*p);
 	// special case the for the first circle
-	side_counter = (side_counter == 0) ? (3) : (side_counter + 1); 
+	side_counter = (side_counter == 0) ? (3) : (side_counter + 1);
+#ifdef DEBUG
 	cout << "New Polygon added: " << side_counter-1 << endl;
+#endif
       }
     }
+
+    gfx_clear();
 
     for(auto i = Polygons.begin(); i != Polygons.end(); i++) {
       i->Draw();
