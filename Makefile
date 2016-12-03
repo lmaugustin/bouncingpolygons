@@ -15,5 +15,5 @@ clean:
 	rm -f *.o *~ crossword
 
 push:
-	git commit -m "Update" *.h *.cpp Makefile
+	-git commit -m "Update" *.h *.cpp Makefile
 	git push https://github.com/lmaugustin/crossword-anagram master
