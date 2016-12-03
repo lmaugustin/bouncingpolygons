@@ -30,7 +30,9 @@ class Polygon {
   void CheckHit(Polygon &p);
   void CheckWall(int width, int height);
 
-  float xc, yc;   // x and y coordinators of the center
+  float xc, yc;   // x and y coordinators of the polygon center
+  float vx, vy;   // velocity in the x and y directions
+  float dt;       // acceleration.  volocity will be multiplied times this.
   float angle;    // rotation angle
   float rad;      // radius
   Color c;        // color

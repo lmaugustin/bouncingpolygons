@@ -13,7 +13,7 @@ static int LOOPTIME = 1000000;
 
 int main() {
   char c = ' ';
-  int side_counter = 3;
+  int side_counter = 0;
   polygon_array_t Polygons;
 
   gfx_open(WIN_WIDTH, WIN_HEIGHT, "Bouncing Polygons");
@@ -26,8 +26,10 @@ int main() {
 	// Add a polygon
 	int x = gfx_xpos();
 	int y = gfx_ypos();
-	Polygon *p = new Polygon(x,y,side_counter++);
+	Polygon *p = new Polygon(x,y,side_counter);
 	Polygons.push_back(*p);
+	// special case the for the first circle
+	side_counter = (side_counter == 0) ? (3) : (side_counter + 1); 
 	cout << "New Polygon added: " << side_counter-1 << endl;
       }
     }
