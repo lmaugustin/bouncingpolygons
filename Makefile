@@ -14,6 +14,12 @@ polybounce.o: polybounce.cpp
 clean:
 	rm -f *.o *~ crossword
 
+commit:
+	git commit -m "Update" *.h *.cpp Makefile
+
+pull:
+	git pull https://github.com/lmaugustin/crossword-anagram
+
 push:
 	-git commit -m "Update" *.h *.cpp Makefile
-	git push https://github.com/lmaugustin/crossword-anagram master
+	git push https://github.com/lmaugustin/crossword-anagram
