@@ -2,7 +2,6 @@
 #include "gfx.h"
 #include <unistd.h>
 #include <cstdlib>
-#include <cmath>
 #include <iostream>
 
 using namespace std;
@@ -12,17 +11,17 @@ static int WIN_HEIGHT = 600;
 static int LOOPTIME = 1000000;
 
 int main() {
-  char c = ' ';
+  char input_c = ' ';
   int side_counter = 0;
   polygon_array_t Polygons;
 
   gfx_open(WIN_WIDTH, WIN_HEIGHT, "Bouncing Polygons");
 
-  while( c != 'q') {
+  while( input_c != 'q') {
     gfx_clear();
     if(gfx_event_waiting()) {
-      c = gfx_wait();
-      if(c == 1) { // mouse click
+      input_c = gfx_wait();
+      if(input_c == 1) { // mouse click
 	// Add a polygon
 	int x = gfx_xpos();
 	int y = gfx_ypos();

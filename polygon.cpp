@@ -25,6 +25,9 @@ Polygon::Polygon(int x, int y, int s) {
   angle = 0;
   // Random color
   c = WHITE;
+  // Start with random velocity vectors
+  vx = vy = 10;
+  dt = 1;
 }
 
 void Polygon::Draw() {
@@ -35,7 +38,7 @@ void Polygon::Draw() {
   int x1 = x+(25*cos(theta));
   int y1 = y-(25*sin(theta));
   
-  gfx_color(this->c);
+  gfx_color(c);
 
   if (sides == 0) {  // special case for sides == 0 is a circle
     gfx_circle(xc, yc, rad);
@@ -53,18 +56,25 @@ void Polygon::Draw() {
   cout << endl;
 }
 
+// Move and rotate the polygon.  Don't worry about hitting walls or other polygons
 void Polygon::Move() {
   double ROTATION_RATE = PI/32.0;
 
   // Move the center according to the velocity vectors
-  // xc = xc + vx*dt;
-  // yc = yc + vy*dt;
+  xc = xc + vx*dt;
+  yc = yc + vy*dt;
+
   // Rotate the starting angle
   angle += ROTATION_RATE;
 }
 
+// Check if the Polygon has hit another Polygon.  Change the veolocity vectors of both
+// Polygons to bounce of each other.
 void Polygon::CheckHit(Polygon &p) {
 }
 
+
+// Check if the Polygon has hit a wall.  Change the veolocity vectors to bounce the Polygon
+// if it has.
 void Polygon::CheckWall(int width, int height) {
 }
