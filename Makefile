@@ -22,5 +22,5 @@ pull:
 	git pull
 
 push:
-	-git commit -m "Update" *.h *.cpp Makefile
+	make pull
 	git push
