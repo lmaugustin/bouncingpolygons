@@ -26,6 +26,8 @@ Polygon::Polygon(int x, int y, int s) {
   sides = s;
   xc = x;
   yc = y;
+  rcx = xc;
+  rcy = yc;
   // Random size (radius)
   rad = DEFAULT_RADIUS;
   // Random starting angle
@@ -46,20 +48,25 @@ Polygon::Polygon(int x, int y, int s) {
 void Polygon::Draw() {
   double theta = angle;
   double i = (2*PI)/sides;
-  double draw_radius = (sides == 0) ? rad : ((rad*2*PI)/sides) ;
+  double draw_radius = (sides == 0) ? rad : ((rad*2.0*PI)/sides) ;
   double x = xc-0.5*(draw_radius*cos(theta));
   double y = yc+0.5*(draw_radius*sin(theta));
   double x1 = x+(draw_radius*cos(theta));
   double y1 = y-(draw_radius*sin(theta));
+  double xsum = 0.0;
+  double ysum = 0.0;
   
   gfx_color(c);
 
-  gfx_circle(xc, yc, 5);
   if (sides == 0) {  // special case for sides == 0 is a circle
-    gfx_circle(xc, yc, draw_radius);
+    gfx_circle((int)xc, (int)yc, (int)draw_radius);
+    rcx = xc;
+    rcy = yc;
   } else {
     for(int j=0; j < sides; j++) {
       gfx_line(x,y,x1,y1);
+      xsum = xsum + x;
+      ysum = ysum + y;
 #ifdef DEBUG
       cout << "gfx_line(" << x << "," << y << "," << x1 << "," << y1 << ")" << endl;
 #endif
@@ -69,7 +76,10 @@ void Polygon::Draw() {
       x1 = x+(draw_radius*cos(theta));
       y1 = y-(draw_radius*sin(theta));
     }
+    rcx = xsum/sides;
+    rcy = ysum/sides;
   }
+  gfx_circle((int)rcx, (int)rcy, 2);
 #ifdef DEBUG
   cout << endl;
 #endif
@@ -87,43 +97,89 @@ void Polygon::Move() {
   angle += ROTATION_RATE;
 }
 
+double sqr(double x) {
+  return x*x;
+}
+
 // Check if the Polygon has hit another Polygon.  Change the veolocity vectors of both
 // Polygons to bounce of each other.
 void Polygon::CheckHit(Polygon &p) {
-  /*
-  if (xc = yc){
-    vx = -vx;
+  double draw_radius = (sides == 0) ? rad : ((rad*2.0*PI)/sides) ;
+  double distance = sqrt(sqr(rcx - p.rcx) + sqr(rcy - p.rcy));
+  double delta = 1.2;
+
+  if(distance < draw_radius) {
+    if((vx > 0) && (p.vx > 0)) {
+      if(rcx > p.rcx) {
+	p.vx = -p.vx;
+      } else {
+	vx = -vx;
+      }
+    } else if ((vx < 0) && (p.vx < 0)) {
+      if (rcx > p.rcx) {
+	vx = -vx;
+      } else {
+	p.vx = -p.vx;
+      }
+    } else if ((vx < 0) && (p.vx > 0)) {
+      if (rcx > p.rcx) {
+	vx = -vx;
+	p.vx = -p.vx;
+      }
+    } else {
+      if (rcx < p.rcx) {
+	vx = -vx;
+	p.vx = -p.vx;
+      }
+    }
+    
+    if((vy > 0) && (p.vy > 0)) {
+      if(rcy < p.rcy) {
+	vy = -vy;
+      } else {
+	p.vy = -p.vy;
+      }
+    } else if ((vy < 0) && (p.vy < 0)) {
+      if (rcy < p.rcy) {
+	p.vy = -p.vy;
+      } else {
+	vy = -vy;
+      }
+    } else if ((vy < 0) && (p.vy > 0)) {
+      if (p.rcy > rcy) {
+	vy = -vy;
+	p.vy = -p.vy;
+      }
+    } else {
+      if (p.rcy < rcy) {
+	vy = -vy;
+	p.vy = -p.vy;
+      }
+    }
+
+    // Move the center according to the new velocity vectors
+    xc = xc + vx*dt*delta;
+    yc = yc + vy*dt*delta;
+
+    p.xc = p.xc + p.vx*p.dt*delta;
+    p.yc = p.yc + p.vy*p.dt*delta;
   }
-  else if(xc <= rad){
-    vx = -vx;
-  }
-  else if(yc = xc){
-    vy = -vy;
-  }
-  else if(yc <= rad){
-    vy = -vy;
-  }
-  */
 }
 
 
 // Check if the Polygon has hit a wall.  Change the veolocity vectors to bounce the Polygon
 // if it has.
 void Polygon::CheckWall(int width, int height) {
-  if(xc >= width-rad){       // right wall
+  if(((rcx + rad) >= width) && (vx > 0)){       // right wall
     vx = -vx;
-    xc = width-rad-1;
   }
-  else if(xc <= rad){         // left wall
+  if(((rcx - rad) <= 0) && (vx < 0)) {         // left wall
     vx = -vx;
-    xc = rad + 1;
   }
-  else if(yc >= height-rad){  // bottom wall
+  if(((rcy + rad) >= height) && (vy > 0)) {  // bottom wall
     vy = -vy;
-    yc = height-rad-1;
   }
-  else if(yc <= rad){         // top wall
+  if(((rcy - rad) <= 0) && (vy < 0)) {         // top wall
     vy = -vy;
-    yc = rad + 1;
   }
 }

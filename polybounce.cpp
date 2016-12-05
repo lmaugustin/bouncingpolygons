@@ -17,6 +17,7 @@ int main() {
   char input_c = ' ';
   int side_counter = 0;
   polygon_array_t Polygons;
+  Polygon *p;
 
   gfx_open(WIN_WIDTH, WIN_HEIGHT, "Bouncing Polygons");
 
@@ -27,7 +28,7 @@ int main() {
 	// Add a polygon
 	int x = gfx_xpos();
 	int y = gfx_ypos();
-	Polygon *p = new Polygon(x,y,side_counter);
+	p = new Polygon(x,y,side_counter);
 	Polygons.push_back(*p);
 	// special case the for the first circle
 	side_counter = (side_counter == 0) ? (3) : (side_counter + 1);
@@ -46,7 +47,9 @@ int main() {
 
     for(auto i = Polygons.begin(); i != Polygons.end(); i++) {
       for(auto j = Polygons.begin(); j != Polygons.end(); j++) {
-	i->CheckHit(*j);
+	if (i != j) {
+	  i->CheckHit(*j);
+	}
       }
     }
 

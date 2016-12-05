@@ -30,13 +30,14 @@ class Polygon {
   void CheckHit(Polygon &p);
   void CheckWall(int width, int height);
 
-  float xc, yc;   // x and y coordinators of the polygon center
-  float vx, vy;   // velocity in the x and y directions
-  float dt;       // acceleration.  volocity will be multiplied times this.
-  float angle;    // rotation angle
-  float rad;      // radius
-  Color c;        // color
-  int sides;      // number of sides
+  double xc, yc;   // x and y coordinators of the polygon center
+  double rcx, rcy; // real center for moving polygons
+  double vx, vy;   // velocity in the x and y directions
+  double dt;       // acceleration.  volocity will be multiplied times this.
+  double angle;    // rotation angle
+  double rad;      // radius
+  Color c;         // color
+  int sides;       // number of sides
 };
 
 typedef vector<Polygon> polygon_array_t;
