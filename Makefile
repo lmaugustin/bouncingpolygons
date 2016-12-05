@@ -1,4 +1,4 @@
-# Makefile for the Game of Life
+# Makefile for the bouncing polygons
 
 GFLAGS=-g -c -std=c++11 -DDEBUG
 

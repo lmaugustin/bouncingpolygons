@@ -88,10 +88,38 @@ void Polygon::Move() {
 // Check if the Polygon has hit another Polygon.  Change the veolocity vectors of both
 // Polygons to bounce of each other.
 void Polygon::CheckHit(Polygon &p) {
+  if (xc = yc){
+    vx = -vx;
+  }
+  else if(xc <= rad){
+    vx = -vx;
+  }
+  else if(yc = xc){
+    vy = -vy;
+  }
+  else if(yc <= rad){
+    vy = -vy;
+  }
 }
 
 
 // Check if the Polygon has hit a wall.  Change the veolocity vectors to bounce the Polygon
 // if it has.
 void Polygon::CheckWall(int width, int height) {
+  if(xc >= width-rad){       // right wall
+    vx = -vx;
+    xc = width-rad-1;
+  }
+  else if(xc <= rad){         // left wall
+    vx = -vx;
+    xc = rad + 1;
+  }
+  else if(yc >= height-rad){  // bottom wall
+    vy = -vy;
+    yc = height-rad-1;
+  }
+  else if(yc <= rad){         // top wall
+    vy = -vy;
+    yc = rad + 1;
+  }
 }
