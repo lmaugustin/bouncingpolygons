@@ -11,7 +11,7 @@ using namespace std;
 
 static int WIN_WIDTH = 600;
 static int WIN_HEIGHT = 600;
-static int LOOPTIME = 10000;
+static int LOOPTIME = 100000;
 
 int main() {
   char input_c = ' ';

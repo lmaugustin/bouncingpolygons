@@ -27,7 +27,7 @@ Polygon::Polygon(int x, int y, int s) {
   xc = x;
   yc = y;
   // Random size (radius)
-  rad = (s == 0) ? DEFAULT_RADIUS : ((DEFAULT_RADIUS*2*PI)/sides) ;
+  rad = DEFAULT_RADIUS;
   // Random starting angle
   angle = 0;
   // Random color
@@ -46,15 +46,17 @@ Polygon::Polygon(int x, int y, int s) {
 void Polygon::Draw() {
   double theta = angle;
   double i = (2*PI)/sides;
-  double y = xc;
-  double x = yc;
-  double x1 = x+(rad*cos(theta));
-  double y1 = y-(rad*sin(theta));
+  double draw_radius = (sides == 0) ? rad : ((rad*2*PI)/sides) ;
+  double x = xc-0.5*(draw_radius*cos(theta));
+  double y = yc+0.5*(draw_radius*sin(theta));
+  double x1 = x+(draw_radius*cos(theta));
+  double y1 = y-(draw_radius*sin(theta));
   
   gfx_color(c);
 
+  gfx_circle(xc, yc, 5);
   if (sides == 0) {  // special case for sides == 0 is a circle
-    gfx_circle(xc, yc, rad);
+    gfx_circle(xc, yc, draw_radius);
   } else {
     for(int j=0; j < sides; j++) {
       gfx_line(x,y,x1,y1);
@@ -64,8 +66,8 @@ void Polygon::Draw() {
       theta += i;
       x=x1;
       y=y1;
-      x1 = x+(rad*cos(theta));
-      y1 = y-(rad*sin(theta));
+      x1 = x+(draw_radius*cos(theta));
+      y1 = y-(draw_radius*sin(theta));
     }
   }
 #ifdef DEBUG
@@ -88,6 +90,7 @@ void Polygon::Move() {
 // Check if the Polygon has hit another Polygon.  Change the veolocity vectors of both
 // Polygons to bounce of each other.
 void Polygon::CheckHit(Polygon &p) {
+  /*
   if (xc = yc){
     vx = -vx;
   }
@@ -100,6 +103,7 @@ void Polygon::CheckHit(Polygon &p) {
   else if(yc <= rad){
     vy = -vy;
   }
+  */
 }
 
 
